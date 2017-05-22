@@ -61,7 +61,7 @@ fi
 # Alle Hosts einlesen
 for host in `echo -e "GET hosts\nColumns: host_name" | unixcat /opt/omd/sites/haba_global/tmp/run/live | sort`; do
   # Alle Services eines Hosts einlesen und nach dem gewuenschten Service suchen
-  if ( ! echo -e "GET hosts\nColumns: services\nFilter:host_name = $host\nLimit: 1" | unixcat /opt/omd/sites/haba_global/tmp/run/live | grep "$SERVICE" >/dev/null 2>&1 ); then
-    echo "$host"
+  if ( ! echo -e "GET hosts\nColumns: services\nFilter:host_name = ${host}\nLimit: 1" | unixcat /opt/omd/sites/haba_global/tmp/run/live | grep "${SERVICE}" >/dev/null 2>&1 ); then
+    echo "${host}"
   fi
 done
