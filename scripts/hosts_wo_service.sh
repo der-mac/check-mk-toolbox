@@ -17,7 +17,7 @@ SITEPATH='/opt/omd/sites/'
 # Unterverzeichnis des LiveStatus-Socket
 LIVEPATH='/tmp/run/live'
 # Vorgabe fuer Site-Name, oder leer (wenn leer, dann per Option '-d' angegeben)
-SITEDIR=''
+SITEDIR=$OMD_SITE
 
 while getopts "hd:s:" Option
   do
