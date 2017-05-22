@@ -28,3 +28,15 @@ Gilt nicht fuer acknowledged/downtimed services/hosts.
 
 ### OPTIONS
     -h Zeigt die Hilfe an.
+
+## plugins\dns_servers
+
+Check_mk-Plugin, dass die aktuell eingetragenen DNS-Server ausliest und im Check_mk-Plugin-Format ausgibt.
+Auf Serverseite werden die ausgegebenen DNS-Server gegen eine Liste zulaessiger IPs geprueft.
+
+### USAGE
+    Plugin-Files in die jeweiligen Verzeichnisse kopieren
+
+### PARAMETER
+    Im Serverfile kann die IP-Liste 'dns_servers_values' angepasst werden.
+	Format: dns_servers_values = ('8.8.8.8', '8.8.4.4' )
