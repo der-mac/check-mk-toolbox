@@ -29,7 +29,7 @@ Gilt nicht fuer acknowledged/downtimed services/hosts.
 ### OPTIONS
     -h Zeigt die Hilfe an.
 
-## plugins\dns_servers
+## plugins/dns_servers
 
 Check_mk-Plugin, dass die aktuell eingetragenen DNS-Server ausliest und im Check_mk-Plugin-Format ausgibt.
 Auf Serverseite werden die ausgegebenen DNS-Server gegen eine Liste zulaessiger IPs geprueft.
