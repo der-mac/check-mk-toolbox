@@ -1,0 +1,74 @@
+################################################################################
+#
+# title             : dns_servers
+# description       : Check_mk-Plugin, dass die aktuell eingetragenen DNS-Server
+#                     prueft und den Status des Checks dementsprechend anpasst
+# author            : Martin Schneider (martin@dermac.de)
+# date              : 20160211
+# version           : 0.3
+# usage             : In Plugin-Verzeichnis des Servers kopieren/verteilen
+#                     Default: "/opt/omd/sites/<sitename>/local/share/check_mk/checks"
+# notes             : ...
+# licence           : Apache License 2.0
+#
+################################################################################
+
+import re
+
+# Hier sind die DNS-Server anzugeben, die ok sind
+dns_servers_values = ('8.8.8.8', '8.8.4.4' )
+
+# Inventarieisert den Check, wenn das Plugin auf dem Client aktiv wird
+def inventory_dns_servers(info):
+  inventory = []
+
+  comp = re.compile("ip[0-9]+")
+  ips = ''
+
+  for line in info:
+    name  = str(line[0])
+    if comp.match(name):
+      inventory.append( (None, None) )
+
+  return inventory
+
+# Prueft die ausgelesenen DNS-Server gegen die obige Liste und passt den Status des Checks dementsprechend an
+def check_dns_servers(item, params, info):
+  crit = params
+
+  comp = re.compile("ip[0-9]+")
+  comp_ip = re.compile("[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+")
+
+  failed = False
+  ips = ''
+
+  for line in info:
+    name  = str(line[0])
+    if (len(line) > 2 and comp.match(name) and comp_ip.match(line[2])):
+      if str(line[2]) in dns_servers_values:
+        if ips == '':
+          ips = str(line[2])
+        else:
+          ips = ips + ', ' + str(line[2])
+      else:
+        failed = True
+        if ips == '':
+          ips = ', Fehler -->' + str(line[2]) + '<---'
+        else:
+          ips = ips + ', Fehler -->' + str(line[2]) + '<---'
+
+  if ips == '':
+    return (2, "Keine DNS-Server gefunden.")
+
+  if failed:
+    return (2, "DNS-Server-Adressen fehlerhaft: %s" % ips)
+  else:
+    return (0, "DNS-Server-Adressen ok: %s" % ips)
+
+# Check-Metadaten und Funktionszuweisung
+check_info["dns_servers"] = {
+    'check_function':            check_dns_servers,
+    'inventory_function':        inventory_dns_servers,
+    'service_description':       'DNS-Server IPs',
+    'has_perfdata':              False,
+}
