@@ -2,7 +2,7 @@
 Verschiedene Scripte fuer die tägliche Arbeit mit Check_mk
 
 
-## hosts_wo_service.sh
+## scripts/hosts_wo_service.sh
 
 Zeigt Hosts, denen ein bestimmter Service fehlt.
 
@@ -18,7 +18,7 @@ Zeigt Hosts, denen ein bestimmter Service fehlt.
     hosts_wo_service.sh -s 'fs_C:/' -d mysite
 
 
-## tabularasa_all_failed.sh
+## scripts/tabularasa_all_failed.sh
 
 Fuehrt ein komplettes Re-Inventory von Hosts mit fehlerhaften Services durch.
 Gilt nicht fuer acknowledged/downtimed services/hosts.
