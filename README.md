@@ -40,3 +40,13 @@ Auf Serverseite werden die ausgegebenen DNS-Server gegen eine Liste zulaessiger 
 ### PARAMETER
     Im Serverfile kann die IP-Liste 'dns_servers_values' angepasst werden.
 	Format: dns_servers_values = ('8.8.8.8', '8.8.4.4' )
+
+## local-scripts/puppet_reports
+
+Check_mk-Local-Script, dass die derzeit registrierten Puppet-Agents ermittelt und den letzten Report auswertet.
+
+### USAGE
+    Das Script auf dem Puppetserver nach /usr/lib/check_mk_agent/local/300/puppet_reports kopieren
+    und für den check_mk-user ausfuehrbar machen.
+    Nach einem Inventory des Puppetserver im Check_mk wird dort fuer jeden Puppet-Agent ein Check erstellt
+    und ueberwacht.

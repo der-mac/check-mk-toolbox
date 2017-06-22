@@ -1,0 +1,36 @@
+#!/bin/bash
+
+max_report_age_days=10
+puppet_bin=/opt/puppetlabs/bin/puppet
+puppet_reportdir=/opt/puppetlabs/server/data/puppetserver/reports/
+
+now=`date +%s`
+max_report_age=$(($max_report_age_days*60*60*24))
+
+
+for host in `$puppet_bin cert list -m --all | egrep '^+' | awk '{ print $2 }' | sed 's/"//g'`; do
+  if [ -d $puppet_reportdir/$host ]; then
+    last_file=`ls -rt /opt/puppetlabs/server/data/puppetserver/reports/$host/* | tail -n1`
+    status=`egrep '^status:' $last_file | awk '{ print $2 }'`
+    date=`egrep '^time' $last_file | awk '{ print $2" "$3 }' | awk -F. '{ print $1}'`
+    timestamp=`date -d "$date" +"%s"`
+
+    if [ $(($now-$timestamp)) -gt $max_report_age ]; then
+      echo "1 puppet_status_${host} - Report for ${host} is older than ${max_report_age_days} days"
+    else
+      case "$status" in
+        unchanged|changed)
+          echo "0 puppet_status_${host} - ${status}"
+          ;;
+        failed)
+          echo "2 puppet_status_${host} - Failed status for host ${host}"
+          ;;
+        *)
+          echo "1 puppet_status_${host} - Unknown status for host ${host} (${status})"
+          ;;
+      esac
+    fi
+  else
+    echo "3 puppet_status_${host} - Missing Report-Directory for host ${host}"
+  fi
+done
